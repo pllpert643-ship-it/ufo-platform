@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="แพลตฟอร์มข่าวกรอง UFO สำหรับติดตาม วิเคราะห์ และจัดการข้อมูลการพบเห็น">
+  <title>UFO / INTEL — Intelligence Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="/console" data-home-link aria-label="UFO Intel overview"><span class="logo" aria-hidden="true"></span><span><strong>UFO / INTEL</strong><small>ANOMALOUS AERIAL PHENOMENA</small></span></a>
+      <div class="side-label">COMMAND CENTER</div>
+      <nav class="nav" aria-label="เมนูหลัก">
+        <a href="/console" data-route="overview" data-home-link><span>⌂</span> Overview</a>
+        <a href="#/sightings" data-route="sightings"><span>◈</span> Sightings</a>
+        <a href="#/map" data-route="map"><span>⊕</span> World map</a>
+        <a href="#/detections" data-route="detections"><span>◉</span> Detections</a>
+        <a href="#/analytics" data-route="analytics"><span>▥</span> Analytics</a>
+      </nav>
+      <div class="side-label">DATA OPERATIONS</div>
+      <nav class="nav nav-secondary" aria-label="เครื่องมือข้อมูล"><a href="#/import" data-route="import"><span>↑</span> Import NUFORC</a><a href="/api/export/sightings.csv"><span>↓</span> Export CSV</a></nav>
+      <div class="sidebar-bottom"><div class="signal-card"><span class="signal-dot"></span><div><strong id="sideStatus">SYSTEM LINKED</strong><small>Local intelligence node</small></div></div><p class="build">NODE 0.2.0 · THAILAND / UTC+7</p></div>
+    </aside>
+    <main class="main-shell">
+      <header class="topbar"><button class="icon-button mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">☰</button><div><p class="eyebrow" id="routeEyebrow">COMMAND CENTER / LAUNCH MENU</p><h1 id="routeTitle">Overview</h1></div><div class="top-actions"><span class="live-status"><i></i><span id="syncStatus">SYNCED</span></span><button class="icon-button" id="refresh" type="button" aria-label="รีเฟรชข้อมูล" title="รีเฟรชข้อมูล">↻</button><button class="language-toggle" data-language-toggle type="button">English</button></div></header>
+      <div id="app" class="page-region" aria-live="polite"></div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/static/app.js"></script><script src="/static/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="เข้าสู่ระบบ UFO / INTEL command center">
+  <meta name="theme-color" content="#050809">
+  <title>Admin sign in — UFO / INTEL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="login-body">
+  <main class="login-layout">
+    <section class="login-visual" aria-label="Orbiting planet artwork">
+      <div class="login-visual-top"><a href="/" class="login-brand"><span class="logo" aria-hidden="true"></span><span>UFO / INTEL</span></a><span class="login-node"><i></i> PRIVATE NODE</span></div>
+      <div class="login-visual-copy"><p class="eyebrow">ANOMALOUS AERIAL PHENOMENA</p><h1>Signals from<br>the unknown.</h1><p>พื้นที่ควบคุมส่วนตัวสำหรับตรวจสอบรายงาน วิเคราะห์รูปแบบ และติดตามตำแหน่งเหตุการณ์ทั่วโลก</p></div>
+      <div class="login-visual-bottom"><span>ORBITAL OBSERVATION NETWORK</span><span>UTC+7 · SECURE SESSION</span></div>
+    </section>
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="login-form-wrap">
+        <p class="eyebrow">ADMIN ACCESS / 01</p>
+        <h2 id="login-title">เข้าสู่ระบบ</h2>
+        <p class="login-intro">ลงชื่อเข้าใช้ด้วยบัญชีผู้ดูแลระบบส่วนตัว</p>
+        <div class="auth-tabs"><button class="auth-tab active" type="button" data-mode="login">Sign in</button><button class="auth-tab" type="button" data-mode="register">Create account</button></div>
+        <form id="loginForm" class="login-form">
+          <label for="username">ชื่อผู้ใช้</label>
+          <input id="username" name="username" autocomplete="username" required maxlength="80" autofocus>
+          <label for="password">รหัสผ่าน</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256">
+          <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
+          <button class="btn primary login-submit" type="submit"><span>เข้าสู่ Command Center</span><span aria-hidden="true">→</span></button>
+        </form>
+        <div class="login-foot"><span class="signal-dot"></span><span>ระบบนี้เปิดให้เฉพาะแอดมินที่ได้รับอนุญาต</span></div>
+      </div>
+      <a class="login-back" href="/">← กลับหน้า Orbit</a>
+    </section>
+  </main>
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorNode = document.getElementById('loginError');
+    const tabs = document.querySelectorAll('[data-mode]');
+    let mode = 'login';
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      mode = tab.dataset.mode;
+      tabs.forEach(item => item.classList.toggle('active', item === tab));
+      errorNode.textContent = '';
+    }));
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = form.querySelector('button');
+      button.disabled = true;
+      errorNode.textContent = '';
+      try {
+        const response = await fetch(mode === 'login' ? '/api/auth/login' : '/api/auth/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username: form.username.value, password: form.password.value})
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.detail || 'เข้าสู่ระบบไม่สำเร็จ');
+        if (mode === 'register') {
+          document.querySelector('[data-mode="login"]').click();
+          errorNode.style.color = 'var(--green)';
+          errorNode.textContent = 'Account created. Please sign in.';
+        } else location.assign(result.redirect || '/console');
+      } catch (error) {
+        errorNode.textContent = error.message || 'เชื่อมต่อระบบไม่ได้';
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
